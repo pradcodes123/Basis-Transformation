@@ -170,18 +170,14 @@ def basis_obfuscate_and_execute(input_qasm):
             'Obf_CRY': '#FF5733', 'Obf_SWAP': '#FF5733'
         }
     }
-    qc = QuantumCircuit(2,2)
-    qc.h(0)
-    qc.cx(0,1)
-    qc.measure(range(2), range(2))
-
-    original_circuit = qc
     original_circuit = add_measurements(original_circuit)
     obfuscated_circuit = apply_basis_obfuscation(original_circuit)
 
     original_results, original_time = execute_circuit(original_circuit)
     obfuscated_results, obfuscated_time = execute_circuit(obfuscated_circuit)
-    obfuscated_circuit.draw('mpl', style=style, filename="circuit.png")
+
+    original_circuit.draw('mpl')
+    obfuscated_circuit.draw('mpl', style=style)
     plt.show()
 
     shots = 1024
@@ -195,7 +191,7 @@ def basis_obfuscate_and_execute(input_qasm):
     elif input_qasm.startswith("OPENQASM 3"):
         obfuscated_qasm_str = qiskit.qasm3.dumps(obfuscated_circuit)
 
-    #print(obfuscated_qasm_str)    
+    print(obfuscated_qasm_str)    
     
     return {
         "original_circuit": original_circuit,
@@ -210,8 +206,9 @@ def basis_obfuscate_and_execute(input_qasm):
     }
 
 if __name__ == "__main__":
-    test_qasm = """
-"""
+    file_path = "QASM Circuits/VQE.qasm" # You may also replace with any other QASM Circuit  available in the folder
+    with open(file_path, "r") as f:
+            test_qasm = f.read()
 
     print("\nTesting QASM Circuit:")
     results = basis_obfuscate_and_execute(test_qasm)
