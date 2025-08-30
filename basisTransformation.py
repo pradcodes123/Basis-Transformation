@@ -170,13 +170,12 @@ def basis_obfuscate_and_execute(input_qasm):
             'Obf_CRY': '#FF5733', 'Obf_SWAP': '#FF5733'
         }
     }
+
     original_circuit = add_measurements(original_circuit)
     obfuscated_circuit = apply_basis_obfuscation(original_circuit)
 
     original_results, original_time = execute_circuit(original_circuit)
     obfuscated_results, obfuscated_time = execute_circuit(obfuscated_circuit)
-
-    original_circuit.draw('mpl')
     obfuscated_circuit.draw('mpl', style=style)
     plt.show()
 
@@ -191,7 +190,7 @@ def basis_obfuscate_and_execute(input_qasm):
     elif input_qasm.startswith("OPENQASM 3"):
         obfuscated_qasm_str = qiskit.qasm3.dumps(obfuscated_circuit)
 
-    print(obfuscated_qasm_str)    
+    #print(obfuscated_qasm_str)    
     
     return {
         "original_circuit": original_circuit,
@@ -205,10 +204,11 @@ def basis_obfuscate_and_execute(input_qasm):
         "obfuscated_time": obfuscated_time,
     }
 
+
 if __name__ == "__main__":
-    file_path = "QASM Circuits/VQE.qasm" # You may also replace with any other QASM Circuit  available in the folder
+    file_path = "QASM Circuits/VQE.qasm" 
     with open(file_path, "r") as f:
-            test_qasm = f.read()
+            test_qasm = f.read() 
 
     print("\nTesting QASM Circuit:")
     results = basis_obfuscate_and_execute(test_qasm)
@@ -224,16 +224,13 @@ if __name__ == "__main__":
     print(f"Total Variation Distance (TVD): {results['tvd']}")
     print(f"Degree of Functional Corruption (DFC): {results['dfc']:.4f}")
 
-    # Combine and align keys
     all_keys = sorted(set(results["original_results"].keys()).union(results["obfuscated_results"].keys()))
     orig_counts = [results["original_results"].get(k, 0) for k in all_keys]
     obfus_counts = [results["obfuscated_results"].get(k, 0) for k in all_keys]
 
-    # Set bar positions
     x = np.arange(len(all_keys))
-    width = 0.35  # width of each bar
+    width = 0.35  
 
-    # Plot
     plt.figure(figsize=(14, 6))
     plt.bar(x - width/2, orig_counts, width, label='Original')
     plt.bar(x + width/2, obfus_counts, width, label='Obfuscated')
