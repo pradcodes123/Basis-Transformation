@@ -206,7 +206,7 @@ def basis_obfuscate_and_execute(input_qasm):
 
 
 if __name__ == "__main__":
-    file_path = "QASM Circuits/VQE.qasm" 
+    file_path = "QASM Circuits/BV(1011).qasm"  # You may also select any other QASM file from the folder "QASM Circuit"
     with open(file_path, "r") as f:
             test_qasm = f.read() 
 
